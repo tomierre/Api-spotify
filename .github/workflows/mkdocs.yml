@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
@@ -32,6 +34,11 @@ jobs:
           pip install mkdocstrings[python]
           pip install pymdown-extensions
 
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
       - name: Build and Deploy
         run: |
           mkdocs gh-deploy --force

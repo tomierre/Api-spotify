@@ -2,6 +2,8 @@
 
 Welcome to the Spotify ETL Pipeline documentation! This project provides a complete solution for extracting data from Spotify API, transforming it, and loading it into BigQuery for analysis.
 
+> **Note:** This documentation is automatically deployed via GitHub Actions.
+
 ## Overview
 
 The Spotify ETL Pipeline is designed to:
