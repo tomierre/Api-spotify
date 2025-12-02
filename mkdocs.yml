@@ -1,6 +1,6 @@
 site_name: Spotify ETL Pipeline Documentation
 site_description: Complete documentation for Spotify to BigQuery ETL pipeline
-site_author: Spotify ETL Team
+site_author: tomierre
 site_url: https://tomierre.github.io/Api-spotify/
 
 repo_name: Api-spotify
