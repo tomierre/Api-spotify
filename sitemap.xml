@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/api-reference/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/architecture/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/deployment/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/getting-started/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+    <url>
+         <loc>https://tomierre.github.io/Api-spotify/spotify-api-guide/</loc>
+         <lastmod>2025-12-02</lastmod>
+    </url>
+</urlset>

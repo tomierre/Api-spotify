@@ -1,0 +1,2551 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete documentation for Spotify to BigQuery ETL pipeline">
+      
+      
+        <meta name="author" content="tomierre">
+      
+      
+        <link rel="canonical" href="https://tomierre.github.io/Api-spotify/api-reference/">
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../spotify-api-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>API Reference - Spotify ETL Pipeline Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spotify ETL Pipeline Documentation" class="md-header__button md-logo" aria-label="Spotify ETL Pipeline Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spotify ETL Pipeline Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/tomierre/Api-spotify" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Api-spotify
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../spotify-api-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Spotify API Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spotify ETL Pipeline Documentation" class="md-nav__button md-logo" aria-label="Spotify ETL Pipeline Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Spotify ETL Pipeline Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/tomierre/Api-spotify" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Api-spotify
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-configsettingspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings (config/settings.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings (config/settings.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spotify-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotify Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotify Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotifyclient-srcspotifyclientpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpotifyClient (src/spotify/client.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpotifyClient (src/spotify/client.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_current_user-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_current_user() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_user_playlistsuser_id-str-limit-int-50-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_user_playlists(user_id: str, limit: int = 50) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_playlist_tracksplaylist_id-str-limit-int-100-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_playlist_tracks(playlist_id: str, limit: int = 100) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_track_audio_featurestrack_ids-list-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_track_audio_features(track_ids: list) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_artistartist_id-str-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_artist(artist_id: str) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_artistsartist_ids-list-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_artists(artist_ids: list) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_recently_playedlimit-int-50-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_recently_played(limit: int = 50) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_top_trackstime_range-str-medium_term-limit-int-20-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_top_tracks(time_range: str = "medium_term", limit: int = 20) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_top_artiststime_range-str-medium_term-limit-int-20-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_top_artists(time_range: str = "medium_term", limit: int = 20) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotifyextractor-srcspotifyextractorpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpotifyExtractor (src/spotify/extractor.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpotifyExtractor (src/spotify/extractor.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract_user_profile-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_user_profile() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_playlistsuser_id-str-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_playlists(user_id: str) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_playlist_tracksplaylist_id-str-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_playlist_tracks(playlist_id: str) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_tracksplaylist_tracks-listdict-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_tracks(playlist_tracks: List[dict]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_audio_featurestrack_ids-liststr-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_audio_features(track_ids: List[str]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_artistsartist_ids-liststr-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_artists(artist_ids: List[str]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_recently_played-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_recently_played() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_top_tracks-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_top_tracks() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_top_artists-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_top_artists() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_all-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_all() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatransformer-srcspotifytransformerspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DataTransformer (src/spotify/transformers.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataTransformer (src/spotify/transformers.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transform_useruser_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_user(user_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_playlistplaylist_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_playlist(playlist_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_tracktrack_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_track(track_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_audio_featuresfeatures_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_audio_features(features_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_artistartist_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_artist(artist_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_allraw_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_all(raw_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bigquery-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQuery Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQuery Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bigqueryclient-srcbigqueryclientpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQueryClient (src/bigquery/client.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQueryClient (src/bigquery/client.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ensure_dataset_exists-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensure_dataset_exists() -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_tabletable_name-str-schema-list-partitioned_by-str-none-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_table(table_name: str, schema: list, partitioned_by: str = None) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigqueryloader-srcbigqueryloaderpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQueryLoader (src/bigquery/loader.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQueryLoader (src/bigquery/loader.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_usersusers-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_users(users: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_playlistsplaylists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_playlists(playlists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_trackstracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_tracks(tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_audio_featuresfeatures-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_audio_features(features: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_artistsartists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_artists(artists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_playlist_tracksplaylist_tracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_playlist_tracks(playlist_tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_recently_playedrecently_played-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_recently_played(recently_played: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_top_trackstop_tracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_top_tracks(top_tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_top_artiststop_artists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_top_artists(top_artists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_alldata-dict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_all(data: dict) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etlpipeline-pipelinesetl_pipelinepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETLPipeline (pipelines/etl_pipeline.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ETLPipeline (pipelines/etl_pipeline.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logger-srcutilsloggerpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logger (src/utils/logger.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logger (src/utils/logger.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup_loggername-str-spotify_etl-logginglogger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        setup_logger(name: str = "spotify_etl") -&gt; logging.Logger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validators-srcutilsvalidatorspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validators (src/utils/validators.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validators (src/utils/validators.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spotify-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spotify API Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-configsettingspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings (config/settings.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Settings (config/settings.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spotify-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotify Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotify Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotifyclient-srcspotifyclientpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpotifyClient (src/spotify/client.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpotifyClient (src/spotify/client.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_current_user-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_current_user() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_user_playlistsuser_id-str-limit-int-50-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_user_playlists(user_id: str, limit: int = 50) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_playlist_tracksplaylist_id-str-limit-int-100-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_playlist_tracks(playlist_id: str, limit: int = 100) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_track_audio_featurestrack_ids-list-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_track_audio_features(track_ids: list) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_artistartist_id-str-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_artist(artist_id: str) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_artistsartist_ids-list-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_artists(artist_ids: list) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_recently_playedlimit-int-50-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_recently_played(limit: int = 50) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_top_trackstime_range-str-medium_term-limit-int-20-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_top_tracks(time_range: str = "medium_term", limit: int = 20) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_top_artiststime_range-str-medium_term-limit-int-20-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_top_artists(time_range: str = "medium_term", limit: int = 20) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spotifyextractor-srcspotifyextractorpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpotifyExtractor (src/spotify/extractor.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpotifyExtractor (src/spotify/extractor.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract_user_profile-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_user_profile() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_playlistsuser_id-str-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_playlists(user_id: str) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_playlist_tracksplaylist_id-str-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_playlist_tracks(playlist_id: str) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_tracksplaylist_tracks-listdict-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_tracks(playlist_tracks: List[dict]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_audio_featurestrack_ids-liststr-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_audio_features(track_ids: List[str]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_artistsartist_ids-liststr-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_artists(artist_ids: List[str]) -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_recently_played-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_recently_played() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_top_tracks-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_top_tracks() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_top_artists-listdict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_top_artists() -&gt; List[dict]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_all-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_all() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datatransformer-srcspotifytransformerspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DataTransformer (src/spotify/transformers.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DataTransformer (src/spotify/transformers.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transform_useruser_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_user(user_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_playlistplaylist_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_playlist(playlist_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_tracktrack_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_track(track_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_audio_featuresfeatures_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_audio_features(features_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_artistartist_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_artist(artist_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform_allraw_data-dict-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform_all(raw_data: dict) -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bigquery-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQuery Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQuery Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bigqueryclient-srcbigqueryclientpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQueryClient (src/bigquery/client.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQueryClient (src/bigquery/client.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ensure_dataset_exists-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensure_dataset_exists() -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_tabletable_name-str-schema-list-partitioned_by-str-none-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_table(table_name: str, schema: list, partitioned_by: str = None) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigqueryloader-srcbigqueryloaderpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQueryLoader (src/bigquery/loader.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BigQueryLoader (src/bigquery/loader.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_usersusers-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_users(users: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_playlistsplaylists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_playlists(playlists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_trackstracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_tracks(tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_audio_featuresfeatures-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_audio_features(features: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_artistsartists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_artists(artists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_playlist_tracksplaylist_tracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_playlist_tracks(playlist_tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_recently_playedrecently_played-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_recently_played(recently_played: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_top_trackstop_tracks-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_top_tracks(top_tracks: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_top_artiststop_artists-listdict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_top_artists(top_artists: List[dict]) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load_alldata-dict-none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_all(data: dict) -&gt; None
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etlpipeline-pipelinesetl_pipelinepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETLPipeline (pipelines/etl_pipeline.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ETLPipeline (pipelines/etl_pipeline.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#methods_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run() -&gt; dict
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logger-srcutilsloggerpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logger (src/utils/logger.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logger (src/utils/logger.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup_loggername-str-spotify_etl-logginglogger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        setup_logger(name: str = "spotify_etl") -&gt; logging.Logger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validators-srcutilsvalidatorspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validators (src/utils/validators.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validators (src/utils/validators.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API Reference</h1>
+<p>Complete API documentation for the Spotify ETL Pipeline.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="settings-configsettingspy">Settings (<code>config/settings.py</code>)</h3>
+<p>Centralized configuration management using Pydantic.</p>
+<h4 id="settings"><code>Settings</code></h4>
+<p>Main settings class that aggregates all configuration.</p>
+<p><strong>Attributes</strong>:
+- <code>spotify</code>: SpotifySettings
+- <code>bigquery</code>: BigQuerySettings
+- <code>limits</code>: ExtractionLimits
+- <code>app</code>: AppSettings</p>
+<p><strong>Properties</strong>:
+- <code>extraction_limits</code>: Returns extraction limits as dictionary</p>
+<h2 id="spotify-module">Spotify Module</h2>
+<h3 id="spotifyclient-srcspotifyclientpy">SpotifyClient (<code>src/spotify/client.py</code>)</h3>
+<p>Client for interacting with Spotify Web API.</p>
+<h4 id="methods">Methods</h4>
+<h5 id="get_current_user-dict"><code>get_current_user() -&gt; dict</code></h5>
+<p>Get current user profile.</p>
+<p><strong>Returns</strong>: User profile information</p>
+<h5 id="get_user_playlistsuser_id-str-limit-int-50-list"><code>get_user_playlists(user_id: str, limit: int = 50) -&gt; list</code></h5>
+<p>Get user playlists with pagination.</p>
+<p><strong>Parameters</strong>:
+- <code>user_id</code>: Spotify user ID
+- <code>limit</code>: Maximum number of playlists per page</p>
+<p><strong>Returns</strong>: List of playlists</p>
+<h5 id="get_playlist_tracksplaylist_id-str-limit-int-100-list"><code>get_playlist_tracks(playlist_id: str, limit: int = 100) -&gt; list</code></h5>
+<p>Get tracks from a playlist with pagination.</p>
+<p><strong>Parameters</strong>:
+- <code>playlist_id</code>: Spotify playlist ID
+- <code>limit</code>: Maximum number of tracks per page</p>
+<p><strong>Returns</strong>: List of tracks</p>
+<h5 id="get_track_audio_featurestrack_ids-list-list"><code>get_track_audio_features(track_ids: list) -&gt; list</code></h5>
+<p>Get audio features for multiple tracks.</p>
+<p><strong>Parameters</strong>:
+- <code>track_ids</code>: List of track IDs (max 100 per request)</p>
+<p><strong>Returns</strong>: List of audio features</p>
+<h5 id="get_artistartist_id-str-dict"><code>get_artist(artist_id: str) -&gt; dict</code></h5>
+<p>Get artist information.</p>
+<p><strong>Parameters</strong>:
+- <code>artist_id</code>: Spotify artist ID</p>
+<p><strong>Returns</strong>: Artist information</p>
+<h5 id="get_artistsartist_ids-list-list"><code>get_artists(artist_ids: list) -&gt; list</code></h5>
+<p>Get multiple artists information.</p>
+<p><strong>Parameters</strong>:
+- <code>artist_ids</code>: List of artist IDs (max 50 per request)</p>
+<p><strong>Returns</strong>: List of artist information</p>
+<h5 id="get_recently_playedlimit-int-50-list"><code>get_recently_played(limit: int = 50) -&gt; list</code></h5>
+<p>Get recently played tracks.</p>
+<p><strong>Parameters</strong>:
+- <code>limit</code>: Maximum number of tracks (max 50)</p>
+<p><strong>Returns</strong>: List of recently played tracks</p>
+<h5 id="get_top_trackstime_range-str-medium_term-limit-int-20-list"><code>get_top_tracks(time_range: str = "medium_term", limit: int = 20) -&gt; list</code></h5>
+<p>Get user's top tracks.</p>
+<p><strong>Parameters</strong>:
+- <code>time_range</code>: Time range (short_term, medium_term, long_term)
+- <code>limit</code>: Maximum number of tracks (max 50)</p>
+<p><strong>Returns</strong>: List of top tracks</p>
+<h5 id="get_top_artiststime_range-str-medium_term-limit-int-20-list"><code>get_top_artists(time_range: str = "medium_term", limit: int = 20) -&gt; list</code></h5>
+<p>Get user's top artists.</p>
+<p><strong>Parameters</strong>:
+- <code>time_range</code>: Time range (short_term, medium_term, long_term)
+- <code>limit</code>: Maximum number of artists (max 50)</p>
+<p><strong>Returns</strong>: List of top artists</p>
+<h3 id="spotifyextractor-srcspotifyextractorpy">SpotifyExtractor (<code>src/spotify/extractor.py</code>)</h3>
+<p>Extract data from Spotify API with limits applied.</p>
+<h4 id="methods_1">Methods</h4>
+<h5 id="extract_user_profile-dict"><code>extract_user_profile() -&gt; dict</code></h5>
+<p>Extract current user profile.</p>
+<p><strong>Returns</strong>: User profile data</p>
+<h5 id="extract_playlistsuser_id-str-listdict"><code>extract_playlists(user_id: str) -&gt; List[dict]</code></h5>
+<p>Extract user playlists (limited by MAX_PLAYLISTS).</p>
+<p><strong>Parameters</strong>:
+- <code>user_id</code>: Spotify user ID</p>
+<p><strong>Returns</strong>: List of playlists</p>
+<h5 id="extract_playlist_tracksplaylist_id-str-listdict"><code>extract_playlist_tracks(playlist_id: str) -&gt; List[dict]</code></h5>
+<p>Extract tracks from a playlist (limited by MAX_TRACKS_PER_PLAYLIST).</p>
+<p><strong>Parameters</strong>:
+- <code>playlist_id</code>: Playlist ID</p>
+<p><strong>Returns</strong>: List of playlist tracks</p>
+<h5 id="extract_tracksplaylist_tracks-listdict-listdict"><code>extract_tracks(playlist_tracks: List[dict]) -&gt; List[dict]</code></h5>
+<p>Extract track information from playlist tracks.</p>
+<p><strong>Parameters</strong>:
+- <code>playlist_tracks</code>: List of playlist track items</p>
+<p><strong>Returns</strong>: List of track data</p>
+<h5 id="extract_audio_featurestrack_ids-liststr-listdict"><code>extract_audio_features(track_ids: List[str]) -&gt; List[dict]</code></h5>
+<p>Extract audio features for tracks (batched).</p>
+<p><strong>Parameters</strong>:
+- <code>track_ids</code>: List of track IDs</p>
+<p><strong>Returns</strong>: List of audio features</p>
+<h5 id="extract_artistsartist_ids-liststr-listdict"><code>extract_artists(artist_ids: List[str]) -&gt; List[dict]</code></h5>
+<p>Extract artist information.</p>
+<p><strong>Parameters</strong>:
+- <code>artist_ids</code>: List of artist IDs</p>
+<p><strong>Returns</strong>: List of artist data</p>
+<h5 id="extract_recently_played-listdict"><code>extract_recently_played() -&gt; List[dict]</code></h5>
+<p>Extract recently played tracks (limited by MAX_RECENTLY_PLAYED).</p>
+<p><strong>Returns</strong>: List of recently played tracks</p>
+<h5 id="extract_top_tracks-listdict"><code>extract_top_tracks() -&gt; List[dict]</code></h5>
+<p>Extract top tracks for all time ranges (limited by TOP_ITEMS_LIMIT).</p>
+<p><strong>Returns</strong>: List of top tracks</p>
+<h5 id="extract_top_artists-listdict"><code>extract_top_artists() -&gt; List[dict]</code></h5>
+<p>Extract top artists for all time ranges (limited by TOP_ITEMS_LIMIT).</p>
+<p><strong>Returns</strong>: List of top artists</p>
+<h5 id="extract_all-dict"><code>extract_all() -&gt; dict</code></h5>
+<p>Extract all available data from Spotify API.</p>
+<p><strong>Returns</strong>: Dictionary containing all extracted data</p>
+<h3 id="datatransformer-srcspotifytransformerspy">DataTransformer (<code>src/spotify/transformers.py</code>)</h3>
+<p>Transform and validate Spotify data.</p>
+<h4 id="methods_2">Methods</h4>
+<h5 id="transform_useruser_data-dict-dict"><code>transform_user(user_data: dict) -&gt; dict</code></h5>
+<p>Transform user profile data.</p>
+<p><strong>Parameters</strong>:
+- <code>user_data</code>: Raw user data from API</p>
+<p><strong>Returns</strong>: Transformed user data</p>
+<h5 id="transform_playlistplaylist_data-dict-dict"><code>transform_playlist(playlist_data: dict) -&gt; dict</code></h5>
+<p>Transform playlist data.</p>
+<p><strong>Parameters</strong>:
+- <code>playlist_data</code>: Raw playlist data from API</p>
+<p><strong>Returns</strong>: Transformed playlist data</p>
+<h5 id="transform_tracktrack_data-dict-dict"><code>transform_track(track_data: dict) -&gt; dict</code></h5>
+<p>Transform track data.</p>
+<p><strong>Parameters</strong>:
+- <code>track_data</code>: Raw track data from API</p>
+<p><strong>Returns</strong>: Transformed track data</p>
+<h5 id="transform_audio_featuresfeatures_data-dict-dict"><code>transform_audio_features(features_data: dict) -&gt; dict</code></h5>
+<p>Transform audio features data.</p>
+<p><strong>Parameters</strong>:
+- <code>features_data</code>: Raw audio features from API</p>
+<p><strong>Returns</strong>: Transformed audio features</p>
+<h5 id="transform_artistartist_data-dict-dict"><code>transform_artist(artist_data: dict) -&gt; dict</code></h5>
+<p>Transform artist data.</p>
+<p><strong>Parameters</strong>:
+- <code>artist_data</code>: Raw artist data from API</p>
+<p><strong>Returns</strong>: Transformed artist data</p>
+<h5 id="transform_allraw_data-dict-dict"><code>transform_all(raw_data: dict) -&gt; dict</code></h5>
+<p>Transform all extracted data.</p>
+<p><strong>Parameters</strong>:
+- <code>raw_data</code>: Dictionary with all raw extracted data</p>
+<p><strong>Returns</strong>: Dictionary with all transformed data</p>
+<h2 id="bigquery-module">BigQuery Module</h2>
+<h3 id="bigqueryclient-srcbigqueryclientpy">BigQueryClient (<code>src/bigquery/client.py</code>)</h3>
+<p>Client for BigQuery operations.</p>
+<h4 id="methods_3">Methods</h4>
+<h5 id="ensure_dataset_exists-none"><code>ensure_dataset_exists() -&gt; None</code></h5>
+<p>Ensure the BigQuery dataset exists, create if it doesn't.</p>
+<h5 id="create_tabletable_name-str-schema-list-partitioned_by-str-none-none"><code>create_table(table_name: str, schema: list, partitioned_by: str = None) -&gt; None</code></h5>
+<p>Create a BigQuery table with schema.</p>
+<p><strong>Parameters</strong>:
+- <code>table_name</code>: Name of the table
+- <code>schema</code>: List of SchemaField objects
+- <code>partitioned_by</code>: Field name for partitioning (optional)</p>
+<h3 id="bigqueryloader-srcbigqueryloaderpy">BigQueryLoader (<code>src/bigquery/loader.py</code>)</h3>
+<p>Load data into BigQuery with upsert strategy.</p>
+<h4 id="methods_4">Methods</h4>
+<h5 id="load_usersusers-listdict-none"><code>load_users(users: List[dict]) -&gt; None</code></h5>
+<p>Load user data to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>users</code>: List of user dictionaries</p>
+<h5 id="load_playlistsplaylists-listdict-none"><code>load_playlists(playlists: List[dict]) -&gt; None</code></h5>
+<p>Load playlist data to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>playlists</code>: List of playlist dictionaries</p>
+<h5 id="load_trackstracks-listdict-none"><code>load_tracks(tracks: List[dict]) -&gt; None</code></h5>
+<p>Load track data to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>tracks</code>: List of track dictionaries</p>
+<h5 id="load_audio_featuresfeatures-listdict-none"><code>load_audio_features(features: List[dict]) -&gt; None</code></h5>
+<p>Load audio features to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>features</code>: List of audio feature dictionaries</p>
+<h5 id="load_artistsartists-listdict-none"><code>load_artists(artists: List[dict]) -&gt; None</code></h5>
+<p>Load artist data to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>artists</code>: List of artist dictionaries</p>
+<h5 id="load_playlist_tracksplaylist_tracks-listdict-none"><code>load_playlist_tracks(playlist_tracks: List[dict]) -&gt; None</code></h5>
+<p>Load playlist-track relationships to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>playlist_tracks</code>: List of playlist-track relationship dictionaries</p>
+<h5 id="load_recently_playedrecently_played-listdict-none"><code>load_recently_played(recently_played: List[dict]) -&gt; None</code></h5>
+<p>Load recently played tracks to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>recently_played</code>: List of recently played track dictionaries</p>
+<h5 id="load_top_trackstop_tracks-listdict-none"><code>load_top_tracks(top_tracks: List[dict]) -&gt; None</code></h5>
+<p>Load top tracks to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>top_tracks</code>: List of top track dictionaries</p>
+<h5 id="load_top_artiststop_artists-listdict-none"><code>load_top_artists(top_artists: List[dict]) -&gt; None</code></h5>
+<p>Load top artists to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>top_artists</code>: List of top artist dictionaries</p>
+<h5 id="load_alldata-dict-none"><code>load_all(data: dict) -&gt; None</code></h5>
+<p>Load all transformed data to BigQuery.</p>
+<p><strong>Parameters</strong>:
+- <code>data</code>: Dictionary with all transformed data</p>
+<h2 id="pipeline-module">Pipeline Module</h2>
+<h3 id="etlpipeline-pipelinesetl_pipelinepy">ETLPipeline (<code>pipelines/etl_pipeline.py</code>)</h3>
+<p>Main ETL pipeline orchestrator.</p>
+<h4 id="methods_5">Methods</h4>
+<h5 id="run-dict"><code>run() -&gt; dict</code></h5>
+<p>Execute the complete ETL pipeline.</p>
+<p><strong>Returns</strong>: Dictionary with execution summary including:
+- <code>status</code>: "success" or "error"
+- <code>users</code>: Number of users loaded
+- <code>playlists</code>: Number of playlists loaded
+- <code>tracks</code>: Number of tracks loaded
+- <code>artists</code>: Number of artists loaded
+- <code>audio_features</code>: Number of audio features loaded
+- <code>recently_played</code>: Number of recently played records loaded
+- <code>top_tracks</code>: Number of top tracks loaded
+- <code>top_artists</code>: Number of top artists loaded</p>
+<h2 id="utilities">Utilities</h2>
+<h3 id="logger-srcutilsloggerpy">Logger (<code>src/utils/logger.py</code>)</h3>
+<p>Centralized logging configuration.</p>
+<h4 id="functions">Functions</h4>
+<h5 id="setup_loggername-str-spotify_etl-logginglogger"><code>setup_logger(name: str = "spotify_etl") -&gt; logging.Logger</code></h5>
+<p>Set up and configure a logger instance.</p>
+<p><strong>Parameters</strong>:
+- <code>name</code>: Name of the logger</p>
+<p><strong>Returns</strong>: Configured logger instance</p>
+<h3 id="validators-srcutilsvalidatorspy">Validators (<code>src/utils/validators.py</code>)</h3>
+<p>Pydantic models for data validation.</p>
+<h4 id="models">Models</h4>
+<ul>
+<li><code>UserValidator</code>: Validates user data</li>
+<li><code>PlaylistValidator</code>: Validates playlist data</li>
+<li><code>TrackValidator</code>: Validates track data</li>
+<li><code>AudioFeaturesValidator</code>: Validates audio features</li>
+<li><code>ArtistValidator</code>: Validates artist data</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
