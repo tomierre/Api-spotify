@@ -1,0 +1,15 @@
+# Core dependencies
+spotipy>=2.23.0
+google-cloud-bigquery>=3.13.0
+pandas>=2.1.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+
+# Orchestration
+prefect>=2.14.0
+
+# Visualization
+streamlit>=1.28.0
+plotly>=5.18.0
+
