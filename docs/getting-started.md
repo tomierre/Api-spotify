@@ -1,161 +1,161 @@
-# Comenzar
+# Getting Started
 
-Esta guía te ayudará a configurar y ejecutar el Pipeline ETL de Spotify desde cero.
+This guide will help you set up and run the Spotify ETL Pipeline from scratch.
 
-## Prerrequisitos
+## Prerequisites
 
-Antes de comenzar, asegúrate de tener:
+Before you begin, ensure you have:
 
-1. **Python 3.11 o superior** instalado
-2. **Cuenta de Spotify Developer** con una aplicación creada
-3. **Cuenta de Google Cloud Platform** con BigQuery habilitado
-4. **Cuenta de Servicio de GCP** con permisos de BigQuery
+1. **Python 3.11 or higher** installed
+2. **Spotify Developer Account** with an app created
+3. **Google Cloud Platform account** with BigQuery enabled
+4. **GCP Service Account** with BigQuery permissions
 
-## Paso 1: Clonar y Configurar el Proyecto
+## Step 1: Clone and Setup Project
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone <repository-url>
 cd Spotify-api
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
-pip install -r requirements-dev.txt  # Para desarrollo
+pip install -r requirements-dev.txt  # For development
 ```
 
-## Paso 2: Configurar la API de Spotify
+## Step 2: Configure Spotify API
 
-1. Ve al [Panel de Spotify Developer](https://developer.spotify.com/dashboard)
-2. Crea una nueva aplicación
-3. Anota tu **Client ID** y **Client Secret**
-4. Agrega la URI de redirección: `http://localhost:8888/callback`
-5. Selecciona **Web API** en la sección API/SDKs
+1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Create a new app
+3. Note your **Client ID** and **Client Secret**
+4. Add redirect URI: `http://localhost:8888/callback`
+5. Select **Web API** in the API/SDKs section
 
-## Paso 3: Configurar Google Cloud Platform
+## Step 3: Configure Google Cloud Platform
 
-1. Crea un nuevo proyecto de GCP o usa uno existente
-2. Habilita la API de BigQuery
-3. Crea una Cuenta de Servicio:
-   - Ve a IAM & Admin → Service Accounts
-   - Crea una nueva cuenta de servicio
-   - Otorga los roles "BigQuery Data Editor" y "BigQuery Job User"
-   - Crea y descarga el archivo JSON de la clave
+1. Create a new GCP project or use an existing one
+2. Enable BigQuery API
+3. Create a Service Account:
+   - Go to IAM & Admin → Service Accounts
+   - Create new service account
+   - Grant "BigQuery Data Editor" and "BigQuery Job User" roles
+   - Create and download JSON key file
 
-## Paso 4: Configurar Variables de Entorno
+## Step 4: Configure Environment Variables
 
 ```bash
-# Copiar archivo de ejemplo de entorno
+# Copy example environment file
 cp .env.example .env
 
-# Editar .env con tus credenciales
+# Edit .env with your credentials
 ```
 
-Actualiza `.env` con:
+Update `.env` with:
 
 ```env
-# API de Spotify
-SPOTIFY_CLIENT_ID=tu_client_id_aqui
-SPOTIFY_CLIENT_SECRET=tu_client_secret_aqui
+# Spotify API
+SPOTIFY_CLIENT_ID=your_client_id_here
+SPOTIFY_CLIENT_SECRET=your_client_secret_here
 SPOTIFY_REDIRECT_URI=http://localhost:8888/callback
 SPOTIFY_SCOPE=user-read-recently-played,user-top-read,user-library-read,playlist-read-private
 
 # Google Cloud / BigQuery
-GOOGLE_APPLICATION_CREDENTIALS=/ruta/al/archivo-service-account-key.json
-BIGQUERY_PROJECT_ID=tu-id-de-proyecto-gcp
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account-key.json
+BIGQUERY_PROJECT_ID=your-gcp-project-id
 BIGQUERY_DATASET_ID=spotify_data
 
-# Límites de Extracción (opcional - valores por defecto mostrados)
+# Extraction Limits (optional - defaults shown)
 MAX_PLAYLISTS=20
 MAX_TRACKS_PER_PLAYLIST=100
 MAX_RECENTLY_PLAYED=50
 TOP_ITEMS_LIMIT=20
 MAX_AUDIO_FEATURES_BATCH=100
 
-# Configuración de la Aplicación
+# Application Configuration
 LOG_LEVEL=INFO
 ENVIRONMENT=development
 ```
 
-## Paso 5: Autenticarse con Spotify
+## Step 5: Authenticate with Spotify
 
-En la primera ejecución, necesitarás autenticarte con Spotify:
+On first run, you'll need to authenticate with Spotify:
 
-1. Ejecuta cualquier script que use la API de Spotify (ej: `python scripts/run_etl.py`)
-2. Verás una URL en la consola
-3. Abre la URL en tu navegador
-4. Autoriza la aplicación
-5. Serás redirigido a `http://localhost:8888/callback`
-6. Copia la URL completa de tu navegador
-7. El token se guardará en caché en `.spotify_cache` para uso futuro
+1. Run any script that uses Spotify API (e.g., `python scripts/run_etl.py`)
+2. You'll see a URL in the console
+3. Open the URL in your browser
+4. Authorize the application
+5. You'll be redirected to `http://localhost:8888/callback`
+6. Copy the full URL from your browser
+7. The token will be cached in `.spotify_cache` for future use
 
-## Paso 6: Configurar Tablas de BigQuery
+## Step 6: Setup BigQuery Tables
 
 ```bash
 python scripts/setup_bigquery.py
 ```
 
-Esto:
-- Creará el dataset de BigQuery (si no existe)
-- Creará todas las tablas necesarias con los esquemas apropiados
-- Configurará el particionado para las tablas de series temporales
+This will:
+- Create the BigQuery dataset (if it doesn't exist)
+- Create all required tables with proper schemas
+- Configure partitioning for time-series tables
 
-## Paso 7: Ejecutar Pipeline ETL
+## Step 7: Run ETL Pipeline
 
 ```bash
 python scripts/run_etl.py
 ```
 
-Esto:
-1. Extraerá datos de la API de Spotify
-2. Transformará y validará los datos
-3. Cargará datos en BigQuery
+This will:
+1. Extract data from Spotify API
+2. Transform and validate the data
+3. Load data into BigQuery
 
-## Paso 8: Iniciar Dashboard de Streamlit
+## Step 8: Launch Streamlit Dashboard
 
 ```bash
 streamlit run streamlit_app/main.py
 ```
 
-Abre tu navegador en `http://localhost:8501` para ver el dashboard.
+Open your browser to `http://localhost:8501` to view the dashboard.
 
-## Paso 9: Monitorear Costos (Opcional)
+## Step 9: Monitor Costs (Optional)
 
 ```bash
 python scripts/monitor_costs.py
 ```
 
-Esto mostrará:
-- Uso actual de almacenamiento
-- Uso de consultas de los últimos 30 días
-- Proyecciones de uso mensual
-- Advertencias si se aproxima a los límites de la capa gratuita
+This will show:
+- Current storage usage
+- Query usage for the last 30 days
+- Projections for monthly usage
+- Warnings if approaching free tier limits
 
-## Solución de Problemas
+## Troubleshooting
 
-### Problemas de Autenticación con Spotify
+### Spotify Authentication Issues
 
-- Asegúrate de que la URI de redirección coincida exactamente en la configuración de la aplicación de Spotify
-- Limpia el archivo `.spotify_cache` y vuelve a autenticarte
-- Verifica que los scopes estén configurados correctamente
+- Ensure redirect URI matches exactly in Spotify app settings
+- Clear `.spotify_cache` file and re-authenticate
+- Check that scopes are correctly set
 
-### Problemas de Conexión con BigQuery
+### BigQuery Connection Issues
 
-- Verifica que la ruta de `GOOGLE_APPLICATION_CREDENTIALS` sea correcta
-- Asegúrate de que la cuenta de servicio tenga los permisos apropiados
-- Verifica que la API de BigQuery esté habilitada en GCP
+- Verify `GOOGLE_APPLICATION_CREDENTIALS` path is correct
+- Ensure service account has proper permissions
+- Check that BigQuery API is enabled in GCP
 
-### Errores de Importación
+### Import Errors
 
-- Asegúrate de que el entorno virtual esté activado
-- Ejecuta `pip install -r requirements.txt` nuevamente
-- Verifica la versión de Python: `python --version` (debe ser 3.11+)
+- Ensure virtual environment is activated
+- Run `pip install -r requirements.txt` again
+- Check Python version: `python --version` (should be 3.11+)
 
-## Próximos Pasos
+## Next Steps
 
-- Lee la guía de [Arquitectura](architecture.md) para entender el diseño del sistema
-- Revisa la [Referencia de API](api-reference.md) para la documentación del código
-- Consulta [Despliegue](deployment.md) para la configuración de producción y monitoreo de costos
+- Read the [Architecture](architecture.md) guide to understand the system design
+- Check the [API Reference](api-reference.md) for code documentation
+- Review [Deployment](deployment.md) for production setup and cost monitoring

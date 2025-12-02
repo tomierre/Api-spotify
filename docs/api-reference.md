@@ -1,402 +1,402 @@
-# Referencia de API
+# API Reference
 
-Documentación completa de la API del Pipeline ETL de Spotify.
+Complete API documentation for the Spotify ETL Pipeline.
 
-## Configuración
+## Configuration
 
 ### Settings (`config/settings.py`)
 
-Gestión centralizada de configuración usando Pydantic.
+Centralized configuration management using Pydantic.
 
 #### `Settings`
 
-Clase principal de configuración que agrega toda la configuración.
+Main settings class that aggregates all configuration.
 
-**Atributos**:
+**Attributes**:
 - `spotify`: SpotifySettings
 - `bigquery`: BigQuerySettings
 - `limits`: ExtractionLimits
 - `app`: AppSettings
 
-**Propiedades**:
-- `extraction_limits`: Retorna los límites de extracción como diccionario
+**Properties**:
+- `extraction_limits`: Returns extraction limits as dictionary
 
-## Módulo Spotify
+## Spotify Module
 
 ### SpotifyClient (`src/spotify/client.py`)
 
-Cliente para interactuar con la API Web de Spotify.
+Client for interacting with Spotify Web API.
 
-#### Métodos
+#### Methods
 
 ##### `get_current_user() -> dict`
 
-Obtener el perfil del usuario actual.
+Get current user profile.
 
-**Retorna**: Información del perfil de usuario
+**Returns**: User profile information
 
 ##### `get_user_playlists(user_id: str, limit: int = 50) -> list`
 
-Obtener playlists del usuario con paginación.
+Get user playlists with pagination.
 
-**Parámetros**:
-- `user_id`: ID de usuario de Spotify
-- `limit`: Número máximo de playlists por página
+**Parameters**:
+- `user_id`: Spotify user ID
+- `limit`: Maximum number of playlists per page
 
-**Retorna**: Lista de playlists
+**Returns**: List of playlists
 
 ##### `get_playlist_tracks(playlist_id: str, limit: int = 100) -> list`
 
-Obtener tracks de una playlist con paginación.
+Get tracks from a playlist with pagination.
 
-**Parámetros**:
-- `playlist_id`: ID de playlist de Spotify
-- `limit`: Número máximo de tracks por página
+**Parameters**:
+- `playlist_id`: Spotify playlist ID
+- `limit`: Maximum number of tracks per page
 
-**Retorna**: Lista de tracks
+**Returns**: List of tracks
 
 ##### `get_track_audio_features(track_ids: list) -> list`
 
-Obtener características de audio para múltiples tracks.
+Get audio features for multiple tracks.
 
-**Parámetros**:
-- `track_ids`: Lista de IDs de tracks (máximo 100 por solicitud)
+**Parameters**:
+- `track_ids`: List of track IDs (max 100 per request)
 
-**Retorna**: Lista de características de audio
+**Returns**: List of audio features
 
 ##### `get_artist(artist_id: str) -> dict`
 
-Obtener información de un artista.
+Get artist information.
 
-**Parámetros**:
-- `artist_id`: ID de artista de Spotify
+**Parameters**:
+- `artist_id`: Spotify artist ID
 
-**Retorna**: Información del artista
+**Returns**: Artist information
 
 ##### `get_artists(artist_ids: list) -> list`
 
-Obtener información de múltiples artistas.
+Get multiple artists information.
 
-**Parámetros**:
-- `artist_ids`: Lista de IDs de artistas (máximo 50 por solicitud)
+**Parameters**:
+- `artist_ids`: List of artist IDs (max 50 per request)
 
-**Retorna**: Lista de información de artistas
+**Returns**: List of artist information
 
 ##### `get_recently_played(limit: int = 50) -> list`
 
-Obtener tracks reproducidos recientemente.
+Get recently played tracks.
 
-**Parámetros**:
-- `limit`: Número máximo de tracks (máximo 50)
+**Parameters**:
+- `limit`: Maximum number of tracks (max 50)
 
-**Retorna**: Lista de tracks reproducidos recientemente
+**Returns**: List of recently played tracks
 
 ##### `get_top_tracks(time_range: str = "medium_term", limit: int = 20) -> list`
 
-Obtener los tracks más escuchados del usuario.
+Get user's top tracks.
 
-**Parámetros**:
-- `time_range`: Rango de tiempo (short_term, medium_term, long_term)
-- `limit`: Número máximo de tracks (máximo 50)
+**Parameters**:
+- `time_range`: Time range (short_term, medium_term, long_term)
+- `limit`: Maximum number of tracks (max 50)
 
-**Retorna**: Lista de tracks más escuchados
+**Returns**: List of top tracks
 
 ##### `get_top_artists(time_range: str = "medium_term", limit: int = 20) -> list`
 
-Obtener los artistas más escuchados del usuario.
+Get user's top artists.
 
-**Parámetros**:
-- `time_range`: Rango de tiempo (short_term, medium_term, long_term)
-- `limit`: Número máximo de artistas (máximo 50)
+**Parameters**:
+- `time_range`: Time range (short_term, medium_term, long_term)
+- `limit`: Maximum number of artists (max 50)
 
-**Retorna**: Lista de artistas más escuchados
+**Returns**: List of top artists
 
 ### SpotifyExtractor (`src/spotify/extractor.py`)
 
-Extraer datos de la API de Spotify con límites aplicados.
+Extract data from Spotify API with limits applied.
 
-#### Métodos
+#### Methods
 
 ##### `extract_user_profile() -> dict`
 
-Extraer el perfil del usuario actual.
+Extract current user profile.
 
-**Retorna**: Datos del perfil de usuario
+**Returns**: User profile data
 
 ##### `extract_playlists(user_id: str) -> List[dict]`
 
-Extraer playlists del usuario (limitado por MAX_PLAYLISTS).
+Extract user playlists (limited by MAX_PLAYLISTS).
 
-**Parámetros**:
-- `user_id`: ID de usuario de Spotify
+**Parameters**:
+- `user_id`: Spotify user ID
 
-**Retorna**: Lista de playlists
+**Returns**: List of playlists
 
 ##### `extract_playlist_tracks(playlist_id: str) -> List[dict]`
 
-Extraer tracks de una playlist (limitado por MAX_TRACKS_PER_PLAYLIST).
+Extract tracks from a playlist (limited by MAX_TRACKS_PER_PLAYLIST).
 
-**Parámetros**:
-- `playlist_id`: ID de playlist
+**Parameters**:
+- `playlist_id`: Playlist ID
 
-**Retorna**: Lista de tracks de playlist
+**Returns**: List of playlist tracks
 
 ##### `extract_tracks(playlist_tracks: List[dict]) -> List[dict]`
 
-Extraer información de tracks desde tracks de playlist.
+Extract track information from playlist tracks.
 
-**Parámetros**:
-- `playlist_tracks`: Lista de items de tracks de playlist
+**Parameters**:
+- `playlist_tracks`: List of playlist track items
 
-**Retorna**: Lista de datos de tracks
+**Returns**: List of track data
 
 ##### `extract_audio_features(track_ids: List[str]) -> List[dict]`
 
-Extraer características de audio para tracks (por lotes).
+Extract audio features for tracks (batched).
 
-**Parámetros**:
-- `track_ids`: Lista de IDs de tracks
+**Parameters**:
+- `track_ids`: List of track IDs
 
-**Retorna**: Lista de características de audio
+**Returns**: List of audio features
 
 ##### `extract_artists(artist_ids: List[str]) -> List[dict]`
 
-Extraer información de artistas.
+Extract artist information.
 
-**Parámetros**:
-- `artist_ids`: Lista de IDs de artistas
+**Parameters**:
+- `artist_ids`: List of artist IDs
 
-**Retorna**: Lista de datos de artistas
+**Returns**: List of artist data
 
 ##### `extract_recently_played() -> List[dict]`
 
-Extraer tracks reproducidos recientemente (limitado por MAX_RECENTLY_PLAYED).
+Extract recently played tracks (limited by MAX_RECENTLY_PLAYED).
 
-**Retorna**: Lista de tracks reproducidos recientemente
+**Returns**: List of recently played tracks
 
 ##### `extract_top_tracks() -> List[dict]`
 
-Extraer tracks más escuchados para todos los rangos de tiempo (limitado por TOP_ITEMS_LIMIT).
+Extract top tracks for all time ranges (limited by TOP_ITEMS_LIMIT).
 
-**Retorna**: Lista de tracks más escuchados
+**Returns**: List of top tracks
 
 ##### `extract_top_artists() -> List[dict]`
 
-Extraer artistas más escuchados para todos los rangos de tiempo (limitado por TOP_ITEMS_LIMIT).
+Extract top artists for all time ranges (limited by TOP_ITEMS_LIMIT).
 
-**Retorna**: Lista de artistas más escuchados
+**Returns**: List of top artists
 
 ##### `extract_all() -> dict`
 
-Extraer todos los datos disponibles de la API de Spotify.
+Extract all available data from Spotify API.
 
-**Retorna**: Diccionario que contiene todos los datos extraídos
+**Returns**: Dictionary containing all extracted data
 
 ### DataTransformer (`src/spotify/transformers.py`)
 
-Transformar y validar datos de Spotify.
+Transform and validate Spotify data.
 
-#### Métodos
+#### Methods
 
 ##### `transform_user(user_data: dict) -> dict`
 
-Transformar datos del perfil de usuario.
+Transform user profile data.
 
-**Parámetros**:
-- `user_data`: Datos brutos de usuario de la API
+**Parameters**:
+- `user_data`: Raw user data from API
 
-**Retorna**: Datos de usuario transformados
+**Returns**: Transformed user data
 
 ##### `transform_playlist(playlist_data: dict) -> dict`
 
-Transformar datos de playlist.
+Transform playlist data.
 
-**Parámetros**:
-- `playlist_data`: Datos brutos de playlist de la API
+**Parameters**:
+- `playlist_data`: Raw playlist data from API
 
-**Retorna**: Datos de playlist transformados
+**Returns**: Transformed playlist data
 
 ##### `transform_track(track_data: dict) -> dict`
 
-Transformar datos de track.
+Transform track data.
 
-**Parámetros**:
-- `track_data`: Datos brutos de track de la API
+**Parameters**:
+- `track_data`: Raw track data from API
 
-**Retorna**: Datos de track transformados
+**Returns**: Transformed track data
 
 ##### `transform_audio_features(features_data: dict) -> dict`
 
-Transformar datos de características de audio.
+Transform audio features data.
 
-**Parámetros**:
-- `features_data`: Características de audio brutas de la API
+**Parameters**:
+- `features_data`: Raw audio features from API
 
-**Retorna**: Características de audio transformadas
+**Returns**: Transformed audio features
 
 ##### `transform_artist(artist_data: dict) -> dict`
 
-Transformar datos de artista.
+Transform artist data.
 
-**Parámetros**:
-- `artist_data`: Datos brutos de artista de la API
+**Parameters**:
+- `artist_data`: Raw artist data from API
 
-**Retorna**: Datos de artista transformados
+**Returns**: Transformed artist data
 
 ##### `transform_all(raw_data: dict) -> dict`
 
-Transformar todos los datos extraídos.
+Transform all extracted data.
 
-**Parámetros**:
-- `raw_data`: Diccionario con todos los datos brutos extraídos
+**Parameters**:
+- `raw_data`: Dictionary with all raw extracted data
 
-**Retorna**: Diccionario con todos los datos transformados
+**Returns**: Dictionary with all transformed data
 
-## Módulo BigQuery
+## BigQuery Module
 
 ### BigQueryClient (`src/bigquery/client.py`)
 
-Cliente para operaciones de BigQuery.
+Client for BigQuery operations.
 
-#### Métodos
+#### Methods
 
 ##### `ensure_dataset_exists() -> None`
 
-Asegurar que el dataset de BigQuery exista, crearlo si no existe.
+Ensure the BigQuery dataset exists, create if it doesn't.
 
 ##### `create_table(table_name: str, schema: list, partitioned_by: str = None) -> None`
 
-Crear una tabla de BigQuery con esquema.
+Create a BigQuery table with schema.
 
-**Parámetros**:
-- `table_name`: Nombre de la tabla
-- `schema`: Lista de objetos SchemaField
-- `partitioned_by`: Nombre del campo para particionado (opcional)
+**Parameters**:
+- `table_name`: Name of the table
+- `schema`: List of SchemaField objects
+- `partitioned_by`: Field name for partitioning (optional)
 
 ### BigQueryLoader (`src/bigquery/loader.py`)
 
-Cargar datos en BigQuery con estrategia upsert.
+Load data into BigQuery with upsert strategy.
 
-#### Métodos
+#### Methods
 
 ##### `load_users(users: List[dict]) -> None`
 
-Cargar datos de usuarios en BigQuery.
+Load user data to BigQuery.
 
-**Parámetros**:
-- `users`: Lista de diccionarios de usuarios
+**Parameters**:
+- `users`: List of user dictionaries
 
 ##### `load_playlists(playlists: List[dict]) -> None`
 
-Cargar datos de playlists en BigQuery.
+Load playlist data to BigQuery.
 
-**Parámetros**:
-- `playlists`: Lista de diccionarios de playlists
+**Parameters**:
+- `playlists`: List of playlist dictionaries
 
 ##### `load_tracks(tracks: List[dict]) -> None`
 
-Cargar datos de tracks en BigQuery.
+Load track data to BigQuery.
 
-**Parámetros**:
-- `tracks`: Lista de diccionarios de tracks
+**Parameters**:
+- `tracks`: List of track dictionaries
 
 ##### `load_audio_features(features: List[dict]) -> None`
 
-Cargar características de audio en BigQuery.
+Load audio features to BigQuery.
 
-**Parámetros**:
-- `features`: Lista de diccionarios de características de audio
+**Parameters**:
+- `features`: List of audio feature dictionaries
 
 ##### `load_artists(artists: List[dict]) -> None`
 
-Cargar datos de artistas en BigQuery.
+Load artist data to BigQuery.
 
-**Parámetros**:
-- `artists`: Lista de diccionarios de artistas
+**Parameters**:
+- `artists`: List of artist dictionaries
 
 ##### `load_playlist_tracks(playlist_tracks: List[dict]) -> None`
 
-Cargar relaciones playlist-track en BigQuery.
+Load playlist-track relationships to BigQuery.
 
-**Parámetros**:
-- `playlist_tracks`: Lista de diccionarios de relaciones playlist-track
+**Parameters**:
+- `playlist_tracks`: List of playlist-track relationship dictionaries
 
 ##### `load_recently_played(recently_played: List[dict]) -> None`
 
-Cargar tracks reproducidos recientemente en BigQuery.
+Load recently played tracks to BigQuery.
 
-**Parámetros**:
-- `recently_played`: Lista de diccionarios de tracks reproducidos recientemente
+**Parameters**:
+- `recently_played`: List of recently played track dictionaries
 
 ##### `load_top_tracks(top_tracks: List[dict]) -> None`
 
-Cargar tracks más escuchados en BigQuery.
+Load top tracks to BigQuery.
 
-**Parámetros**:
-- `top_tracks`: Lista de diccionarios de tracks más escuchados
+**Parameters**:
+- `top_tracks`: List of top track dictionaries
 
 ##### `load_top_artists(top_artists: List[dict]) -> None`
 
-Cargar artistas más escuchados en BigQuery.
+Load top artists to BigQuery.
 
-**Parámetros**:
-- `top_artists`: Lista de diccionarios de artistas más escuchados
+**Parameters**:
+- `top_artists`: List of top artist dictionaries
 
 ##### `load_all(data: dict) -> None`
 
-Cargar todos los datos transformados en BigQuery.
+Load all transformed data to BigQuery.
 
-**Parámetros**:
-- `data`: Diccionario con todos los datos transformados
+**Parameters**:
+- `data`: Dictionary with all transformed data
 
-## Módulo Pipeline
+## Pipeline Module
 
 ### ETLPipeline (`pipelines/etl_pipeline.py`)
 
-Orquestador principal del pipeline ETL.
+Main ETL pipeline orchestrator.
 
-#### Métodos
+#### Methods
 
 ##### `run() -> dict`
 
-Ejecutar el pipeline ETL completo.
+Execute the complete ETL pipeline.
 
-**Retorna**: Diccionario con resumen de ejecución incluyendo:
-- `status`: "success" o "error"
-- `users`: Número de usuarios cargados
-- `playlists`: Número de playlists cargadas
-- `tracks`: Número de tracks cargados
-- `artists`: Número de artistas cargados
-- `audio_features`: Número de características de audio cargadas
-- `recently_played`: Número de registros de reproducción reciente cargados
-- `top_tracks`: Número de tracks más escuchados cargados
-- `top_artists`: Número de artistas más escuchados cargados
+**Returns**: Dictionary with execution summary including:
+- `status`: "success" or "error"
+- `users`: Number of users loaded
+- `playlists`: Number of playlists loaded
+- `tracks`: Number of tracks loaded
+- `artists`: Number of artists loaded
+- `audio_features`: Number of audio features loaded
+- `recently_played`: Number of recently played records loaded
+- `top_tracks`: Number of top tracks loaded
+- `top_artists`: Number of top artists loaded
 
-## Utilidades
+## Utilities
 
 ### Logger (`src/utils/logger.py`)
 
-Configuración centralizada de logging.
+Centralized logging configuration.
 
-#### Funciones
+#### Functions
 
 ##### `setup_logger(name: str = "spotify_etl") -> logging.Logger`
 
-Configurar e inicializar una instancia de logger.
+Set up and configure a logger instance.
 
-**Parámetros**:
-- `name`: Nombre del logger
+**Parameters**:
+- `name`: Name of the logger
 
-**Retorna**: Instancia de logger configurada
+**Returns**: Configured logger instance
 
 ### Validators (`src/utils/validators.py`)
 
-Modelos Pydantic para validación de datos.
+Pydantic models for data validation.
 
-#### Modelos
+#### Models
 
-- `UserValidator`: Valida datos de usuario
-- `PlaylistValidator`: Valida datos de playlist
-- `TrackValidator`: Valida datos de track
-- `AudioFeaturesValidator`: Valida características de audio
-- `ArtistValidator`: Valida datos de artista
+- `UserValidator`: Validates user data
+- `PlaylistValidator`: Validates playlist data
+- `TrackValidator`: Validates track data
+- `AudioFeaturesValidator`: Validates audio features
+- `ArtistValidator`: Validates artist data

@@ -1,14 +1,14 @@
-# Arquitectura
+# Architecture
 
-Este documento describe la arquitectura y el diseño del Pipeline ETL de Spotify.
+This document describes the architecture and design of the Spotify ETL Pipeline.
 
-## Resumen del Sistema
+## System Overview
 
-El pipeline sigue una arquitectura ETL (Extract, Transform, Load) tradicional con los siguientes componentes:
+The pipeline follows a traditional ETL (Extract, Transform, Load) architecture with the following components:
 
 ```
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐      ┌──────────────┐
-│  Spotify   │─────▶│   Extraer    │─────▶│ Transformar │─────▶│    Cargar    │
+│  Spotify   │─────▶│   Extract    │─────▶│ Transform   │─────▶│    Load      │
 │    API     │      │              │      │              │      │  BigQuery    │
 └────────────┘      └──────────────┘      └─────────────┘      └──────────────┘
                                                       │
@@ -19,227 +19,227 @@ El pipeline sigue una arquitectura ETL (Extract, Transform, Load) tradicional co
                                             └──────────────┘
 ```
 
-## Componentes
+## Components
 
-### 1. Cliente de Spotify (`src/spotify/client.py`)
+### 1. Spotify Client (`src/spotify/client.py`)
 
-**Responsabilidad**: Autenticación y comunicación con la API
+**Responsibility**: Authentication and API communication
 
-- Maneja el flujo de autenticación OAuth2
-- Gestiona la renovación y caché de tokens
-- Implementa límites de velocidad y lógica de reintentos
-- Proporciona métodos para todos los endpoints de la API de Spotify
+- Handles OAuth2 authentication flow
+- Manages token refresh and caching
+- Implements rate limiting and retry logic
+- Provides methods for all Spotify API endpoints
 
-**Características Clave**:
-- Renovación automática de tokens
-- Retroceso exponencial para límites de velocidad
-- Manejo de errores y reintentos
+**Key Features**:
+- Automatic token refresh
+- Exponential backoff for rate limits
+- Error handling and retries
 
-### 2. Extractores de Datos (`src/spotify/extractor.py`)
+### 2. Data Extractor (`src/spotify/extractor.py`)
 
-**Responsabilidad**: Extraer datos de la API de Spotify
+**Responsibility**: Extract data from Spotify API
 
-- Extrae información del perfil de usuario
-- Obtiene playlists con paginación
-- Recupera tracks y características de audio
-- Obtiene información de artistas
-- Obtiene tracks reproducidos recientemente
-- Recupera tracks y artistas más escuchados
+- Extracts user profile information
+- Fetches playlists with pagination
+- Retrieves tracks and audio features
+- Gets artist information
+- Fetches recently played tracks
+- Retrieves top tracks and artists
 
-**Límites de Extracción** (para optimización de costos):
-- Máximo 20 playlists
-- Máximo 100 tracks por playlist
-- Últimos 50 tracks reproducidos recientemente
-- Top 20 tracks/artistas por rango de tiempo
+**Extraction Limits** (for cost optimization):
+- Maximum 20 playlists
+- Maximum 100 tracks per playlist
+- Last 50 recently played tracks
+- Top 20 tracks/artists per time range
 
-### 3. Transformador de Datos (`src/spotify/transformers.py`)
+### 3. Data Transformer (`src/spotify/transformers.py`)
 
-**Responsabilidad**: Transformar y validar datos
+**Responsibility**: Transform and validate data
 
-- Normaliza estructuras de datos de diferentes endpoints
-- Valida datos usando modelos Pydantic
-- Enriquece datos con timestamps
-- Limpia y estandariza formatos
+- Normalizes data from different endpoints
+- Validates data using Pydantic models
+- Enriches data with timestamps
+- Cleans and standardizes formats
 
-**Modelos de Validación**:
-- `UserModel` - Datos del perfil de usuario
-- `PlaylistModel` - Información de playlists
-- `TrackModel` - Detalles de tracks
-- `AudioFeaturesModel` - Características de audio
-- `ArtistModel` - Información de artistas
+**Validation Models**:
+- `UserModel` - User profile data
+- `PlaylistModel` - Playlist information
+- `TrackModel` - Track details
+- `AudioFeaturesModel` - Audio features
+- `ArtistModel` - Artist information
 
-### 4. Cliente de BigQuery (`src/bigquery/client.py`)
+### 4. BigQuery Client (`src/bigquery/client.py`)
 
-**Responsabilidad**: Conexión a BigQuery y gestión de datasets
+**Responsibility**: BigQuery connection and dataset management
 
-- Gestiona la conexión del cliente de BigQuery
-- Asegura que el dataset exista
-- Crea tablas con esquemas
-- Maneja operaciones de tablas
+- Manages BigQuery client connection
+- Ensures dataset exists
+- Creates tables with schemas
+- Handles table operations
 
-### 5. Cargador de BigQuery (`src/bigquery/loader.py`)
+### 5. BigQuery Loader (`src/bigquery/loader.py`)
 
-**Responsabilidad**: Cargar datos en BigQuery
+**Responsibility**: Load data into BigQuery
 
-- Implementa estrategia upsert (merge)
-- Maneja carga incremental
-- Gestiona inserciones por lotes
-- Deduplica datos
+- Implements upsert strategy (merge)
+- Handles incremental loading
+- Manages batch inserts
+- Deduplicates data
 
-**Estrategia de Carga**:
-- Upsert para registros existentes
-- Insert para nuevos registros
-- Procesamiento por lotes para eficiencia
+**Loading Strategy**:
+- Upsert for existing records
+- Insert for new records
+- Batch processing for efficiency
 
-### 6. Pipeline ETL (`pipelines/etl_pipeline.py`)
+### 6. ETL Pipeline (`pipelines/etl_pipeline.py`)
 
-**Responsabilidad**: Orquestar el proceso ETL completo
+**Responsibility**: Orchestrate the complete ETL process
 
-- Coordina extracción, transformación y carga
-- Maneja errores y logging
-- Proporciona resumen de ejecución
+- Coordinates extraction, transformation, and loading
+- Handles errors and logging
+- Provides execution summary
 
-## Flujo de Datos
+## Data Flow
 
-### Fase de Extracción
+### Extraction Phase
 
-1. Autenticarse con la API de Spotify
-2. Extraer perfil de usuario
-3. Extraer playlists del usuario (limitado a 20)
-4. Para cada playlist, extraer tracks (limitado a 100 por playlist)
-5. Extraer características de audio para tracks únicos
-6. Extraer información de artistas para artistas únicos
-7. Extraer tracks reproducidos recientemente (últimos 50)
-8. Extraer tracks y artistas más escuchados (top 20 cada uno)
+1. Authenticate with Spotify API
+2. Extract user profile
+3. Extract user playlists (limited to 20)
+4. For each playlist, extract tracks (limited to 100 per playlist)
+5. Extract audio features for unique tracks
+6. Extract artist information for unique artists
+7. Extract recently played tracks (last 50)
+8. Extract top tracks and artists (top 20 each)
 
-### Fase de Transformación
+### Transformation Phase
 
-1. Normalizar estructuras de datos
-2. Validar datos con modelos Pydantic
-3. Agregar timestamps de extracción
-4. Limpiar y estandarizar formatos
-5. Preparar datos para esquemas de BigQuery
+1. Normalize data structures
+2. Validate data with Pydantic models
+3. Add extraction timestamps
+4. Clean and standardize formats
+5. Prepare data for BigQuery schemas
 
-### Fase de Carga
+### Loading Phase
 
-1. Conectar a BigQuery
-2. Para cada tabla:
-   - Verificar si existen registros
-   - Realizar operación upsert (merge)
-   - Insertar nuevos registros
-   - Actualizar registros existentes
+1. Connect to BigQuery
+2. For each table:
+   - Check if records exist
+   - Perform upsert (merge) operation
+   - Insert new records
+   - Update existing records
 
-## Esquema de Base de Datos
+## Database Schema
 
-### Tablas
+### Tables
 
-1. **users** - Información del perfil de usuario
-2. **playlists** - Metadatos de playlists
-3. **tracks** - Información de tracks
-4. **track_audio_features** - Características de análisis de audio
-5. **artists** - Información de artistas
-6. **playlist_tracks** - Relación muchos a muchos
-7. **recently_played** - Historial de reproducción (particionado por fecha)
-8. **top_tracks** - Tracks más escuchados del usuario por rango de tiempo (particionado)
-9. **top_artists** - Artistas más escuchados del usuario por rango de tiempo (particionado)
+1. **users** - User profile information
+2. **playlists** - Playlist metadata
+3. **tracks** - Track information
+4. **track_audio_features** - Audio analysis features
+5. **artists** - Artist information
+6. **playlist_tracks** - Many-to-many relationship
+7. **recently_played** - Playback history (partitioned by date)
+8. **top_tracks** - User's top tracks by time range (partitioned)
+9. **top_artists** - User's top artists by time range (partitioned)
 
-### Estrategia de Particionado
+### Partitioning Strategy
 
-- **recently_played**: Particionado por `played_at` (fecha)
-- **top_tracks**: Particionado por `extracted_at` (fecha)
-- **top_artists**: Particionado por `extracted_at` (fecha)
+- **recently_played**: Partitioned by `played_at` (date)
+- **top_tracks**: Partitioned by `extracted_at` (date)
+- **top_artists**: Partitioned by `extracted_at` (date)
 
-Esto permite consultas eficientes de datos de series temporales y ayuda con políticas de retención de datos.
+This allows efficient querying of time-series data and helps with data retention policies.
 
-## Optimización de Costos
+## Cost Optimization
 
-### Optimización de Almacenamiento
+### Storage Optimization
 
-- Usar tipos de datos apropiados (STRING en lugar de TEXT)
-- Particionar solo tablas de series temporales
-- Implementar políticas de retención de datos (90 días para recently_played)
+- Use appropriate data types (STRING instead of TEXT)
+- Partition only time-series tables
+- Implement data retention policies (90 days for recently_played)
 
-### Optimización de Consultas
+### Query Optimization
 
-- Limitar extracción solo a datos necesarios
-- Usar carga incremental (solo datos nuevos/modificados)
-- Implementar caché en el dashboard de Streamlit
-- Usar cláusulas LIMIT en consultas
+- Limit extraction to necessary data only
+- Use incremental loading (only new/changed data)
+- Implement caching in Streamlit dashboard
+- Use LIMIT clauses in queries
 
-### Límites de la Capa Gratuita
+### Free Tier Limits
 
-- **Almacenamiento**: 10 GB/mes (gratis)
-- **Consultas**: 1 TB/mes (gratis)
+- **Storage**: 10 GB/month (free)
+- **Queries**: 1 TB/month (free)
 
-El pipeline está diseñado para mantenerse bien dentro de estos límites.
+The pipeline is designed to stay well within these limits.
 
-## Manejo de Errores
+## Error Handling
 
-### Lógica de Reintentos
+### Retry Logic
 
-- Reintento automático con retroceso exponencial para límites de velocidad
-- Renovación de token en errores de autenticación
-- Máximo 3 reintentos para errores transitorios
+- Automatic retry with exponential backoff for rate limits
+- Token refresh on authentication errors
+- Maximum 3 retries for transient errors
 
 ### Logging
 
-- Configuración centralizada de logging
-- Diferentes niveles de log (DEBUG, INFO, WARNING, ERROR)
-- Logging a archivo en entorno de producción
+- Centralized logging configuration
+- Different log levels (DEBUG, INFO, WARNING, ERROR)
+- File logging in production environment
 
-## Seguridad
+## Security
 
-### Gestión de Credenciales
+### Credentials Management
 
-- Variables de entorno para datos sensibles
-- Archivo `.env` (no incluido en git)
-- JSON de cuenta de servicio para GCP (almacenado de forma segura)
+- Environment variables for sensitive data
+- `.env` file (not committed to git)
+- Service account JSON for GCP (stored securely)
 
-### Flujo OAuth2
+### OAuth2 Flow
 
-- Almacenamiento seguro de tokens en `.spotify_cache`
-- Renovación automática de tokens
-- Sin credenciales hardcodeadas
+- Secure token storage in `.spotify_cache`
+- Automatic token refresh
+- No hardcoded credentials
 
-## Consideraciones de Escalabilidad
+## Scalability Considerations
 
-### Diseño Actual
+### Current Design
 
-- Extracción de usuario único
-- Ejecución manual
-- Adecuado para análisis de datos personales
+- Single-user extraction
+- Manual execution
+- Suitable for personal data analysis
 
-### Mejoras Futuras
+### Future Enhancements
 
-- Soporte multi-usuario
-- Ejecución programada (cron, Cloud Scheduler)
-- Procesamiento paralelo para grandes conjuntos de datos
-- Actualizaciones de datos en streaming
+- Multi-user support
+- Scheduled execution (cron, Cloud Scheduler)
+- Parallel processing for large datasets
+- Streaming data updates
 
-## Monitoreo
+## Monitoring
 
-### Monitoreo de Costos
+### Cost Monitoring
 
-- Script para verificar uso de BigQuery
-- Alertas para aproximarse a límites de la capa gratuita
-- Proyecciones mensuales
+- Script to check BigQuery usage
+- Alerts for approaching free tier limits
+- Monthly projections
 
-### Monitoreo del Pipeline
+### Pipeline Monitoring
 
-- Logging detallado en cada paso
-- Resúmenes de ejecución
-- Seguimiento de errores
+- Detailed logging at each step
+- Execution summaries
+- Error tracking
 
-## Estrategia de Testing
+## Testing Strategy
 
-### Tests Unitarios
+### Unit Tests
 
-- Probar cada componente independientemente
-- Simular APIs externas (Spotify, BigQuery)
-- Validar transformaciones de datos
+- Test each component independently
+- Mock external APIs (Spotify, BigQuery)
+- Validate data transformations
 
-### Tests de Integración
+### Integration Tests
 
-- Testing end-to-end del pipeline
-- Probar con datos de prueba
-- Verificar esquemas de BigQuery
+- End-to-end pipeline testing
+- Test with test data
+- Verify BigQuery schemas

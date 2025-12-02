@@ -1,101 +1,101 @@
-# Documentación del Pipeline ETL de Spotify
+# Spotify ETL Pipeline Documentation
 
-¡Bienvenido a la documentación del Pipeline ETL de Spotify! Este proyecto proporciona una solución completa para extraer datos de la API de Spotify, transformarlos y cargarlos en BigQuery para su análisis.
+Welcome to the Spotify ETL Pipeline documentation! This project provides a complete solution for extracting data from Spotify API, transforming it, and loading it into BigQuery for analysis.
 
-> **Nota:** Esta documentación se despliega automáticamente mediante GitHub Actions.
+> **Note:** This documentation is automatically deployed via GitHub Actions.
 
-## Resumen
+## Overview
 
-El Pipeline ETL de Spotify está diseñado para:
+The Spotify ETL Pipeline is designed to:
 
-- **Extraer** datos de la API Web de Spotify (perfil de usuario, playlists, tracks, artistas, características de audio)
-- **Transformar** y validar datos usando modelos Pydantic
-- **Cargar** datos en BigQuery con esquemas optimizados y actualizaciones incrementales
-- **Visualizar** datos a través de un dashboard interactivo con Streamlit
-- **Optimizar costos** para mantenerse dentro de los límites de la capa gratuita de BigQuery
+- **Extract** data from Spotify Web API (user profile, playlists, tracks, artists, audio features)
+- **Transform** and validate data using Pydantic models
+- **Load** data into BigQuery with optimized schemas and incremental updates
+- **Visualize** data through an interactive Streamlit dashboard
+- **Optimize costs** to stay within BigQuery's free tier limits
 
-## Características Principales
+## Key Features
 
-- 🔐 **Autenticación OAuth2** con la API de Spotify
-- 📊 **Extracción Completa de Datos** desde múltiples endpoints de Spotify
-- ✅ **Validación de Datos** usando modelos Pydantic
-- 🚀 **Carga Eficiente en BigQuery** con estrategias upsert/incrementales
-- 📈 **Dashboard Interactivo** con Streamlit
-- 💰 **Optimización de Costos** para mantener el uso en la capa gratuita
-- 📚 **Documentación Completa** con MkDocs
+- 🔐 **OAuth2 Authentication** with Spotify API
+- 📊 **Comprehensive Data Extraction** from multiple Spotify endpoints
+- ✅ **Data Validation** using Pydantic models
+- 🚀 **Efficient BigQuery Loading** with upsert/incremental strategies
+- 📈 **Interactive Dashboard** with Streamlit
+- 💰 **Cost Optimization** to maintain free tier usage
+- 📚 **Complete Documentation** with MkDocs
 
-## Inicio Rápido
+## Quick Start
 
-1. **Instalar dependencias**:
+1. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **Configurar entorno**:
+2. **Configure environment**:
    ```bash
    cp .env.example .env
-   # Editar .env con tus credenciales
+   # Edit .env with your credentials
    ```
 
-3. **Configurar BigQuery**:
+3. **Setup BigQuery**:
    ```bash
    python scripts/setup_bigquery.py
    ```
 
-4. **Ejecutar Pipeline ETL**:
+4. **Run ETL Pipeline**:
    ```bash
    python scripts/run_etl.py
    ```
 
-5. **Iniciar Dashboard**:
+5. **Launch Dashboard**:
    ```bash
    streamlit run streamlit_app/main.py
    ```
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 Spotify-api/
-├── config/              # Configuración y esquemas
-├── src/                 # Código fuente
-│   ├── spotify/        # Cliente y extractores de la API de Spotify
-│   ├── bigquery/       # Cliente y cargador de BigQuery
-│   └── utils/          # Utilidades (logging, validadores)
-├── pipelines/          # Pipelines ETL
-├── streamlit_app/      # Dashboard de Streamlit
-├── tests/              # Tests unitarios
-├── scripts/            # Scripts ejecutables
-└── docs/               # Documentación
+├── config/              # Configuration and schemas
+├── src/                 # Source code
+│   ├── spotify/        # Spotify API client and extractors
+│   ├── bigquery/       # BigQuery client and loader
+│   └── utils/          # Utilities (logging, validators)
+├── pipelines/          # ETL pipelines
+├── streamlit_app/      # Streamlit dashboard
+├── tests/              # Unit tests
+├── scripts/            # Executable scripts
+└── docs/               # Documentation
 ```
 
-## Secciones de Documentación
+## Documentation Sections
 
-- **[Comenzar](getting-started.md)** - Guía de instalación y configuración
-- **[Arquitectura](architecture.md)** - Arquitectura y diseño del sistema
-- **[Referencia de API](api-reference.md)** - Documentación del código
-- **[Guía de la API de Spotify](spotify-api-guide.md)** - Endpoints y uso de la API de Spotify
-- **[Despliegue](deployment.md)** - Configuración de producción y monitoreo de costos
+- **[Getting Started](getting-started.md)** - Installation and setup guide
+- **[Architecture](architecture.md)** - System architecture and design
+- **[API Reference](api-reference.md)** - Code documentation
+- **[Spotify API Guide](spotify-api-guide.md)** - Spotify API endpoints and usage
+- **[Deployment](deployment.md)** - Deployment and cost monitoring
 
-## Requisitos
+## Requirements
 
 - Python 3.11+
-- Cuenta de Spotify Developer (Client ID y Secret)
-- Cuenta de Google Cloud Platform con BigQuery habilitado
-- Credenciales de cuenta de servicio de GCP (archivo JSON)
+- Spotify Developer Account (Client ID and Secret)
+- Google Cloud Platform account with BigQuery enabled
+- GCP Service Account credentials (JSON file)
 
-## Optimización de Costos
+## Cost Optimization
 
-Este proyecto está diseñado para operar dentro de la capa gratuita de BigQuery:
+This project is designed to operate within BigQuery's free tier:
 
-- **10 GB** de almacenamiento por mes (gratis)
-- **1 TB** de consultas por mes (gratis)
+- **10 GB** of storage per month (free)
+- **1 TB** of queries per month (free)
 
-Consulta la [Guía de Despliegue](deployment.md) para estrategias de monitoreo y optimización de costos.
+See [Deployment Guide](deployment.md) for cost monitoring and optimization strategies.
 
-## Licencia
+## License
 
 MIT License
 
-## Contribuciones
+## Contributing
 
-¡Las contribuciones son bienvenidas! Por favor, no dudes en enviar un Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
