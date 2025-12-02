@@ -1,179 +1,179 @@
-# Spotify API Guide
+# Guía de la API de Spotify
 
-This guide explains how to use the Spotify Web API endpoints in this project.
+Esta guía explica cómo usar los endpoints de la API Web de Spotify en este proyecto.
 
-## Authentication
+## Autenticación
 
-The project uses OAuth2 authentication with the following flow:
+El proyecto usa autenticación OAuth2 con el siguiente flujo:
 
-1. User authorizes the application
-2. Receive authorization code
-3. Exchange code for access token
-4. Use access token for API requests
-5. Refresh token when expired
+1. El usuario autoriza la aplicación
+2. Se recibe el código de autorización
+3. Se intercambia el código por un token de acceso
+4. Se usa el token de acceso para solicitudes a la API
+5. Se renueva el token cuando expira
 
-### Required Scopes
+### Scopes Requeridos
 
-- `user-read-recently-played`: Read recently played tracks
-- `user-top-read`: Read user's top tracks and artists
-- `user-library-read`: Read user's saved tracks and albums
-- `playlist-read-private`: Read user's private playlists
+- `user-read-recently-played`: Leer tracks reproducidos recientemente
+- `user-top-read`: Leer tracks y artistas más escuchados del usuario
+- `user-library-read`: Leer tracks y álbumes guardados del usuario
+- `playlist-read-private`: Leer playlists privadas del usuario
 
-## Endpoints Used
+## Endpoints Utilizados
 
-### User Profile
+### Perfil de Usuario
 
 **Endpoint**: `GET /v1/me`
 
-**Usage**: Get current user's profile information
+**Uso**: Obtener información del perfil del usuario actual
 
-**Response Fields**:
-- `id`: User ID
-- `display_name`: Display name
-- `followers`: Followers count
-- `country`: Country code
-- `product`: Subscription type (free/premium)
+**Campos de Respuesta**:
+- `id`: ID de usuario
+- `display_name`: Nombre para mostrar
+- `followers`: Cantidad de seguidores
+- `country`: Código de país
+- `product`: Tipo de suscripción (free/premium)
 
-### User Playlists
+### Playlists del Usuario
 
 **Endpoint**: `GET /v1/users/{user_id}/playlists`
 
-**Usage**: Get user's playlists
+**Uso**: Obtener playlists del usuario
 
-**Pagination**: Supports `limit` and `offset` parameters
+**Paginación**: Soporta parámetros `limit` y `offset`
 
-**Response Fields**:
-- `id`: Playlist ID
-- `name`: Playlist name
-- `description`: Playlist description
-- `owner`: Owner information
-- `public`: Public/private status
-- `collaborative`: Collaborative status
-- `followers`: Followers count
-- `tracks`: Tracks information
+**Campos de Respuesta**:
+- `id`: ID de playlist
+- `name`: Nombre de playlist
+- `description`: Descripción de playlist
+- `owner`: Información del propietario
+- `public`: Estado público/privado
+- `collaborative`: Estado colaborativo
+- `followers`: Cantidad de seguidores
+- `tracks`: Información de tracks
 
-### Playlist Tracks
+### Tracks de Playlist
 
 **Endpoint**: `GET /v1/playlists/{playlist_id}/tracks`
 
-**Usage**: Get tracks from a playlist
+**Uso**: Obtener tracks de una playlist
 
-**Pagination**: Supports `limit` and `offset` parameters
+**Paginación**: Soporta parámetros `limit` y `offset`
 
-**Response Fields**:
-- `track`: Track object
-- `added_at`: When track was added
-- `added_by`: User who added the track
+**Campos de Respuesta**:
+- `track`: Objeto de track
+- `added_at`: Cuándo se agregó el track
+- `added_by`: Usuario que agregó el track
 
-### Track Audio Features
+### Características de Audio de Tracks
 
 **Endpoint**: `GET /v1/audio-features`
 
-**Usage**: Get audio features for multiple tracks
+**Uso**: Obtener características de audio para múltiples tracks
 
-**Limits**: Maximum 100 track IDs per request
+**Límites**: Máximo 100 IDs de tracks por solicitud
 
-**Response Fields**:
+**Campos de Respuesta**:
 - `danceability`: 0.0-1.0
 - `energy`: 0.0-1.0
-- `key`: 0-11 (musical key)
-- `loudness`: dB value
-- `mode`: 0 (minor) or 1 (major)
+- `key`: 0-11 (tono musical)
+- `loudness`: Valor en dB
+- `mode`: 0 (menor) o 1 (mayor)
 - `speechiness`: 0.0-1.0
 - `acousticness`: 0.0-1.0
 - `instrumentalness`: 0.0-1.0
 - `liveness`: 0.0-1.0
-- `valence`: 0.0-1.0 (positivity)
+- `valence`: 0.0-1.0 (positividad)
 - `tempo`: BPM
 - `time_signature`: 3-7
 
-### Artist Information
+### Información de Artistas
 
 **Endpoint**: `GET /v1/artists`
 
-**Usage**: Get information for multiple artists
+**Uso**: Obtener información de múltiples artistas
 
-**Limits**: Maximum 50 artist IDs per request
+**Límites**: Máximo 50 IDs de artistas por solicitud
 
-**Response Fields**:
-- `id`: Artist ID
-- `name`: Artist name
-- `genres`: List of genres
+**Campos de Respuesta**:
+- `id`: ID de artista
+- `name`: Nombre del artista
+- `genres`: Lista de géneros
 - `popularity`: 0-100
-- `followers`: Followers count
-- `external_urls`: Spotify URLs
+- `followers`: Cantidad de seguidores
+- `external_urls`: URLs de Spotify
 
-### Recently Played Tracks
+### Tracks Reproducidos Recientemente
 
 **Endpoint**: `GET /v1/me/player/recently-played`
 
-**Usage**: Get recently played tracks
+**Uso**: Obtener tracks reproducidos recientemente
 
-**Limits**: Maximum 50 tracks per request
+**Límites**: Máximo 50 tracks por solicitud
 
-**Response Fields**:
-- `track`: Track object
-- `played_at`: Timestamp when played
-- `context`: Playback context
+**Campos de Respuesta**:
+- `track`: Objeto de track
+- `played_at`: Timestamp de cuándo se reprodujo
+- `context`: Contexto de reproducción
 
-### Top Tracks
+### Tracks Más Escuchados
 
 **Endpoint**: `GET /v1/me/top/tracks`
 
-**Usage**: Get user's top tracks
+**Uso**: Obtener los tracks más escuchados del usuario
 
-**Parameters**:
-- `time_range`: `short_term` (4 weeks), `medium_term` (6 months), `long_term` (all time)
-- `limit`: Maximum 50
+**Parámetros**:
+- `time_range`: `short_term` (4 semanas), `medium_term` (6 meses), `long_term` (todo el tiempo)
+- `limit`: Máximo 50
 
-**Response Fields**:
-- `id`: Track ID
-- `name`: Track name
-- `artists`: Artist information
-- `popularity`: Popularity score
-- `album`: Album information
+**Campos de Respuesta**:
+- `id`: ID de track
+- `name`: Nombre del track
+- `artists`: Información de artistas
+- `popularity`: Puntuación de popularidad
+- `album`: Información de álbum
 
-### Top Artists
+### Artistas Más Escuchados
 
 **Endpoint**: `GET /v1/me/top/artists`
 
-**Usage**: Get user's top artists
+**Uso**: Obtener los artistas más escuchados del usuario
 
-**Parameters**:
+**Parámetros**:
 - `time_range`: `short_term`, `medium_term`, `long_term`
-- `limit`: Maximum 50
+- `limit`: Máximo 50
 
-**Response Fields**:
-- `id`: Artist ID
-- `name`: Artist name
-- `genres`: Genres
-- `popularity`: Popularity score
-- `followers`: Followers count
+**Campos de Respuesta**:
+- `id`: ID de artista
+- `name`: Nombre del artista
+- `genres`: Géneros
+- `popularity`: Puntuación de popularidad
+- `followers`: Cantidad de seguidores
 
-## Rate Limiting
+## Límites de Velocidad
 
-Spotify API has rate limits:
+La API de Spotify tiene límites de velocidad:
 
-- **30 requests per second** per application
-- Rate limit headers in responses:
-  - `X-RateLimit-Limit`: Requests allowed
-  - `X-RateLimit-Remaining`: Requests remaining
-  - `Retry-After`: Seconds to wait if rate limited
+- **30 solicitudes por segundo** por aplicación
+- Headers de límite de velocidad en respuestas:
+  - `X-RateLimit-Limit`: Solicitudes permitidas
+  - `X-RateLimit-Remaining`: Solicitudes restantes
+  - `Retry-After`: Segundos a esperar si se excede el límite
 
-The client automatically handles rate limiting with exponential backoff.
+El cliente maneja automáticamente los límites de velocidad con retroceso exponencial.
 
-## Error Handling
+## Manejo de Errores
 
-### Common Error Codes
+### Códigos de Error Comunes
 
-- `400 Bad Request`: Invalid parameters
-- `401 Unauthorized`: Invalid or expired token
-- `403 Forbidden`: Insufficient permissions
-- `404 Not Found`: Resource doesn't exist
-- `429 Too Many Requests`: Rate limit exceeded
-- `500 Internal Server Error`: Spotify server error
+- `400 Bad Request`: Parámetros inválidos
+- `401 Unauthorized`: Token inválido o expirado
+- `403 Forbidden`: Permisos insuficientes
+- `404 Not Found`: El recurso no existe
+- `429 Too Many Requests`: Límite de velocidad excedido
+- `500 Internal Server Error`: Error del servidor de Spotify
 
-### Error Response Format
+### Formato de Respuesta de Error
 
 ```json
 {
@@ -184,30 +184,29 @@ The client automatically handles rate limiting with exponential backoff.
 }
 ```
 
-## Best Practices
+## Mejores Prácticas
 
-1. **Cache Tokens**: Store tokens securely and refresh before expiration
-2. **Handle Pagination**: Always check for `next` field in paginated responses
-3. **Batch Requests**: Use batch endpoints when available (audio features, artists)
-4. **Respect Rate Limits**: Implement exponential backoff
-5. **Error Handling**: Handle all error cases gracefully
-6. **Data Validation**: Validate all API responses before processing
+1. **Cachear Tokens**: Almacenar tokens de forma segura y renovar antes de la expiración
+2. **Manejar Paginación**: Siempre verificar el campo `next` en respuestas paginadas
+3. **Solicitudes por Lotes**: Usar endpoints por lotes cuando estén disponibles (características de audio, artistas)
+4. **Respetar Límites de Velocidad**: Implementar retroceso exponencial
+5. **Manejo de Errores**: Manejar todos los casos de error de forma elegante
+6. **Validación de Datos**: Validar todas las respuestas de la API antes de procesarlas
 
-## Data Extraction Limits
+## Límites de Extracción de Datos
 
-To optimize costs and stay within free tier, the project implements limits:
+Para optimizar costos y mantenerse dentro de la capa gratuita, el proyecto implementa límites:
 
-- **Playlists**: Maximum 20 playlists
-- **Tracks per Playlist**: Maximum 100 tracks
-- **Recently Played**: Last 50 tracks
-- **Top Items**: Top 20 tracks/artists per time range
-- **Audio Features**: Batched in groups of 100
+- **Playlists**: Máximo 20 playlists
+- **Tracks por Playlist**: Máximo 100 tracks
+- **Reproducidos Recientemente**: Últimos 50 tracks
+- **Items Más Escuchados**: Top 20 tracks/artistas por rango de tiempo
+- **Características de Audio**: Procesados en grupos de 100
 
-These limits can be adjusted in `.env` file.
+Estos límites se pueden ajustar en el archivo `.env`.
 
-## References
+## Referencias
 
-- [Spotify Web API Documentation](https://developer.spotify.com/documentation/web-api)
-- [Spotify Web API Reference](https://developer.spotify.com/documentation/web-api/reference)
-- [Authorization Guide](https://developer.spotify.com/documentation/general/guides/authorization)
-
+- [Documentación de la API Web de Spotify](https://developer.spotify.com/documentation/web-api)
+- [Referencia de la API Web de Spotify](https://developer.spotify.com/documentation/web-api/reference)
+- [Guía de Autorización](https://developer.spotify.com/documentation/general/guides/authorization)

@@ -1,5 +1,5 @@
-site_name: Spotify ETL Pipeline Documentation
-site_description: Complete documentation for Spotify to BigQuery ETL pipeline
+site_name: Documentación del Pipeline ETL de Spotify
+site_description: Documentación completa del pipeline ETL de Spotify a BigQuery
 site_author: tomierre
 site_url: https://tomierre.github.io/Api-spotify/
 
@@ -15,13 +15,13 @@ theme:
       accent: indigo
       toggle:
         icon: material/brightness-7
-        name: Switch to dark mode
+        name: Cambiar a modo oscuro
     - scheme: slate
       primary: indigo
       accent: indigo
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Cambiar a modo claro
   features:
     - navigation.tabs
     - navigation.sections
@@ -65,10 +65,10 @@ plugins:
             show_root_toc_entry: true
 
 nav:
-  - Home: index.md
-  - Getting Started: getting-started.md
-  - Architecture: architecture.md
-  - API Reference: api-reference.md
-  - Spotify API Guide: spotify-api-guide.md
-  - Deployment: deployment.md
+  - Inicio: index.md
+  - Comenzar: getting-started.md
+  - Arquitectura: architecture.md
+  - Referencia de API: api-reference.md
+  - Guía de la API de Spotify: spotify-api-guide.md
+  - Despliegue: deployment.md
 
